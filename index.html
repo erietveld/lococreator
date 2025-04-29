@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocoCreator</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <div class="input-help">
+        <p>Format your questions as follows:</p>
+        <pre>Question: Quiz Title
+      Hint: Optional hint text
+      1. Question text? Answer: Answer text
+      2. Another question? Answer: Another answer</pre>
+      </div>
+    <textarea id="qaInput" placeholder="">Question: Praesens vs Imperfectum - Grieks Mini Loco 
+        Hint: Zoek de praesensvorm die hoort bij de gegeven imperfectumvorm.
+        1. ἔλυον (enkelvoud) answer: λύω
+        2. ἔλυες  answer: λύεις
+        3. ἔλυε(ν) answer: λύει
+        4. ἐλύομεν answer: λύομεν
+        5. ἐλύετε answer: λύετε
+        6. ἔλυον (meervoud) answer: λύουσι(ν)
+        7. ἐποίουν (enkelvoud) answer: ποιῶ
+        8. ἐποίεις  answer: ποιεῖς
+        9. ἐποίει answer: ποιεῖ
+        10. ἐποιοῦμεν answer: ποιοῦμεν
+        11. ἐποιεῖτε  answer: ποιεῖτε
+        12. ἐποίουν (meervoud) answer: ποιοῦσι(ν)"></textarea>
+    <div class="container">
+        <div class="grid" id="grid"></div>
+        <div class="id-grid" id="id-grid"></div>
+    </div>
+    <br>
+    <button id="CreateLocoBtn">Create Loco</button>
+    
+    <script src="js/pdfHelper.js" charset="utf-8" defer></script>
+    <script src="js/main.js" charset="utf-8"></script>
+
+    <script>
+        (function(){
+        let squaresData = [
+            { id: 5, isTop: true, isLeft: true, color: 'red', location: 1 },
+            { id: 2, isTop: false, isLeft: false, color: 'blue', location: 2 },
+            { id: 10, isTop: true, isLeft: false, color: 'green', location: 3 }, 
+            { id: 3, isTop: false, isLeft: true, color: 'red', location: 4 },
+            { id: 12, isTop: true, isLeft: true, color: 'blue', location: 5 }, 
+            { id: 1, isTop: false, isLeft: false, color: 'green', location: 6 },
+            { id: 11, isTop: true, isLeft: false, color: 'red', location: 7 },
+            { id: 6, isTop: false, isLeft: true, color: 'blue', location: 8 }, 
+            { id: 7, isTop: true, isLeft: true, color: 'green', location: 9 },
+            { id: 9, isTop: false, isLeft: false, color: 'red', location: 10 },
+            { id: 8, isTop: true, isLeft: false, color: 'blue', location: 11 },
+            { id: 4, isTop: false, isLeft: true, color: 'green', location: 12 }
+        ];
+
+        const grid = document.getElementById('grid');
+        const createLocoBtn = document.getElementById('CreateLocoBtn');
+
+        // Initial draw
+        squaresData = shuffleBlocks(squaresData);
+        drawGrid(squaresData);
+
+        // Add click event to shuffle and redraw
+        grid.addEventListener('click', () => {
+            squaresData = shuffleBlocks(squaresData);
+            drawGrid(squaresData);
+        });
+        window.addEventListener('load', () => {
+            createLocoBtn.addEventListener('click', () => {
+                createLoco(squaresData);
+            });
+
+        });
+    })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js" defer></script>
+<script src="js/NotoSerif-Regular-normal.js" charset="utf-8" defer></script>
+</body>
+</html>

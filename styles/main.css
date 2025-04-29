@@ -1,0 +1,160 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+textarea {
+    width: 80%;
+    max-width: 600px;
+    height: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    resize: none;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.grid,
+.id-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 100px);
+    grid-template-rows: repeat(2, 100px);
+    gap: 2px;
+}
+.id-grid {
+    display: none;
+}
+
+.grid {
+    cursor: pointer;
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff;
+    border: 2px solid #000;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.id-square {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.top-left .rect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+}
+
+.top-left .triangle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.top-right .rect {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+}
+
+.top-right .triangle {
+    position: absolute;
+    top: 0;
+    right: 50%;
+    width: 50%;
+    height: 100%;
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+.bottom-left .rect {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+}
+
+.bottom-left .triangle {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.bottom-right .rect {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+}
+
+.bottom-right .triangle {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    width: 50%;
+    height: 100%;
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.green {
+    background-color: green;
+}
