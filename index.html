@@ -17,24 +17,35 @@
       2. Another question? Answer: Another answer</pre>
       </div>
     <textarea id="qaInput" placeholder="">Question: Praesens vs Imperfectum - Grieks Mini Loco 
-        Hint: Zoek de praesensvorm die hoort bij de gegeven imperfectumvorm.
-        1. ἔλυον (enkelvoud) answer: λύω
-        2. ἔλυες  answer: λύεις
-        3. ἔλυε(ν) answer: λύει
-        4. ἐλύομεν answer: λύομεν
-        5. ἐλύετε answer: λύετε
-        6. ἔλυον (meervoud) answer: λύουσι(ν)
-        7. ἐποίουν (enkelvoud) answer: ποιῶ
-        8. ἐποίεις  answer: ποιεῖς
-        9. ἐποίει answer: ποιεῖ
-        10. ἐποιοῦμεν answer: ποιοῦμεν
-        11. ἐποιεῖτε  answer: ποιεῖτε
-        12. ἐποίουν (meervoud) answer: ποιοῦσι(ν)"></textarea>
+Hint: Zoek de praesensvorm die hoort bij de gegeven imperfectumvorm.
+1. ἔλυον (enkelvoud) een erg lange text met daarna pasanswer: λύω
+2. ἔλυες  tweede is een stuk korter hooranswer: λύεις
+3. ἔλυε(ν) answer: λύει  ook een erg lang antwoord denk ik. 
+4. ἐλύομεν answer: λύομεν
+5. ἐλύετε answer: λύετε
+6. ἔλυον (meervoud) answer: λύουσι(ν)
+7. ἐποίουν (enkelvoud) answer: ποιῶ
+8. ἐποίεις  answer: ποιεῖς
+9. ἐποίει answer: ποιεῖ
+10. ἐποιοῦμεν answer: ποιοῦμεν
+11. ἐποιεῖτε  answer: ποιεῖτε
+12. ἐποίουν (meervoud) answer: ποιοῦσι(ν)</textarea>
     <div class="container">
         <div class="grid" id="grid"></div>
         <div class="id-grid" id="id-grid"></div>
     </div>
     <br>
+    <form>
+        <input type="radio" id="keepOrder" name="questionOrder" value="keepOrder" checked>
+        <label for="keepOrder">Keep question order</label><br>
+    
+        <input type="radio" id="randomize" name="questionOrder" value="randomize">
+        <label for="randomize">Randomize</label><br>
+    
+        <input type="radio" id="keepAnswerOrder" name="questionOrder" value="keepAnswerOrder">
+        <label for="keepAnswerOrder">Keep answer order</label>
+      </form>
+
     <button id="CreateLocoBtn">Create Loco</button>
     
     <script src="js/pdfHelper.js" charset="utf-8" defer></script>
@@ -73,7 +84,6 @@
             createLocoBtn.addEventListener('click', () => {
                 createLoco(squaresData);
             });
-
         });
     })();
 </script>

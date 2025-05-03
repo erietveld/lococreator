@@ -12,36 +12,52 @@ function createLoco(squaresData) {
 
     // Parse input from textarea
     const input = document.getElementById('qaInput').value.split('\n');
-    const questionName = input[0].replace('Question: ', '');
-    const hint = input[1].replace('Hint: ', '');
+    const questionName = input.shift().replace('Question: ', '').trim();
+    const hint = input.shift().replace('Hint: ', '').trim();
+
+    const selectedRadio = document.querySelector('input[name="questionOrder"]:checked').value;
+    if (selectedRadio === 'randomize'){
+        input.sort(() => Math.random() - 0.5); // Simple random sort
+    }
+    // Example:  'keepOrder', 'randomize', or 'keepAnswerOrder'
+
     const questions = [];
     const answers = [];
-    for (let i = 2; i < input.length; i++) {
+    for (let i = 0; i < input.length; i++) {
+        if (input[i].trim() === "") continue;
         const [num, qa] = input[i].split('. ');
         const [question, answer] =  qa.split(/Answer:\s*/i);
-        questions.push(question);
-        answers.push(answer);
+        questions.push(question.trim());
+        answers.push(answer.trim());
     }
 
-    const sortedSquares = [...squaresData].sort((a, b) => a.location - b.location);
-    const idOrder = sortedSquares.map(square => square.id - 1); // Adjust for 0-based index
-    let mixedAnswers = idOrder.map(index => answers[index]);
+
+    let finalAnswers, finalQuestions;
+    if (selectedRadio === 'keepAnswerOrder'){
+        const sortedSquares = [...squaresData].sort((a, b) => a.id - b.id);
+        const idOrder = sortedSquares.map(square => square.location - 1); // Adjust for 0-based index
+        finalQuestions = idOrder.map(index => questions[index]);
+        finalAnswers = answers; 
+    }
+    else{
+        //Working
+        const sortedSquares = [...squaresData].sort((a, b) => a.location - b.location);
+        const idOrder = sortedSquares.map(square => square.id - 1); // Adjust for 0-based index
+        
+        finalQuestions = questions;
+        finalAnswers = idOrder.map(index => answers[index]);
+    }
 
     // Page dimensions (A4 landscape: 297mm x 210mm)
     const pageWidth = 297;
     const pageHeight = 210;
     const margin = 10;
-    const squareSize = 30; // 30mm x 30mm squares
+    const squareSize = 41;
     const startX = margin;
-    let startY = margin + 10;
-
-    // Add question name and hint at the top
-    doc.setFontSize(12);
-    doc.text(questionName, margin, margin);
-    doc.text(hint, margin, margin + 5);
+    let startY = 5;//margin + 10;
 
     // Draw question grid (2 rows, 6 columns, connected)
-    doc.setFontSize(10);
+    doc.setFontSize(12);
     for (let i = 0; i < 12; i++) {
         const row = Math.floor(i / 6);
         const col = i % 6;
@@ -52,23 +68,40 @@ function createLoco(squaresData) {
         doc.rect(x, y, squareSize, squareSize);
 
         // Draw small number square in top-left corner
-        const numSquareSize = 6;
+        const numSquareSize = 8;
         doc.rect(x, y, numSquareSize, numSquareSize);
-        doc.text(String(i + 1), x + 1.4, y + 3.5);
+        doc.text(String(i + 1), x + 1.6, y + 6.1);
 
         // Center the question text in the square
-        const textWidth = doc.getTextWidth(questions[i]);
-        const textHeight = 3; // Approximate height of text in mm
-        const textX = x + (squareSize - 20) / 2;
-        const textY = y + (squareSize + textHeight) / 2;
-        doc.text(questions[i], textX, textY, { maxWidth: squareSize - 5 }); // Wrap text if too long
+        const fontSize = doc.getFontSize(); // Get current font size
+        const lineHeight = fontSize * 0.5; // Approximate line height (adjust if needed)
+        const maxWidth = squareSize - 5; // Maximum width for text wrapping
+        
+        // Split text into lines to calculate total height
+        const lines = doc.splitTextToSize(finalQuestions[i], maxWidth);
+        const textHeight = lines.length * lineHeight; // Total height of wrapped text
+        
+        // Calculate vertical position to center the text block
+        const textY = y + (squareSize - textHeight) / 2 + lineHeight * 0.8; // Adjust for baseline
+        
+        // Draw the text with automatic centering
+        doc.text(lines, x + squareSize / 2, textY, { maxWidth: maxWidth, align: 'center' });
+
     }
-
-    // Draw answer grid (2 rows, 6 columns, connected) below the question grid
+ 
     startY += 2 * squareSize + 5;
-    startY = drawGridPDF(doc, squaresData, startY);
+    // Add question name and hint at the top
+    doc.setFontSize(12);
+    doc.text(questionName, margin, startY);
+    doc.text(hint, margin, startY + 5);
 
-    startY += 10; // Move down for answers
+  //  startY -= 10;
+
+   // Draw answer grid (2 rows, 6 columns, connected) below the question grid
+    startY = drawGridPDF(doc, squaresData, startY);
+    startY += 10;
+
+    // startY += 10; // Move down for answers
     for (let i = 0; i < 12; i++) {
         const row = Math.floor(i / 6);
         const col = i % 6;
@@ -79,11 +112,19 @@ function createLoco(squaresData) {
         doc.rect(x, y, squareSize, squareSize);
 
         // Center the answer text in the square
-        const textWidth = doc.getTextWidth(mixedAnswers[i]);
-        const textHeight = 3;
-        const textX = x + (squareSize - textWidth) / 2;
-        const textY = y + (squareSize + textHeight) / 2;
-        doc.text(mixedAnswers[i], textX, textY, { maxWidth: squareSize - 5 }); // Wrap text if too long
+        const fontSize = doc.getFontSize(); // Get current font size
+        const lineHeight = fontSize * 0.5; // Approximate line height (adjust if needed)
+        const maxWidth = squareSize - 5; // Maximum width for text wrapping
+        
+        // Split text into lines to calculate total height
+        const lines = doc.splitTextToSize(finalAnswers[i], maxWidth);
+        const textHeight = lines.length * lineHeight; // Total height of the text block
+        
+        // Center the entire text block vertically in the square
+        const textY = y + (squareSize - textHeight) / 2 + lineHeight * 0.8; // Adjust for baseline
+                
+        // Draw the text with automatic horizontal centering
+        doc.text(lines, x + squareSize / 2, textY, { maxWidth: maxWidth, align: 'center' });
     }
     // Save the PDF
     doc.save('loco_output.pdf');
@@ -105,7 +146,7 @@ function drawGridPDF(doc, squaresData, startY) {
 
     // Sort squaresData by location
     const sortedData = [...squaresData].sort((a, b) => a.location - b.location);
-    const xMargin = 120;
+    const xMargin = 190;
     sortedData.forEach((square, index) => {
         // Calculate row and column based on location (1 to 12)
         const row = Math.floor(index / gridWidth);

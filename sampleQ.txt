@@ -1,0 +1,14 @@
+Puzzle About German Colors in Dutch
+Match the German color with the Dutch translation
+1. Blau answer: Blauw
+2. Rot answer: Rood
+3. Gelb answer: Geel
+4. Grün answer: Groen
+5. Schwarz answer: Zwart
+6. Weiß answer: Wit
+7. Braun answer: Bruin
+8. Orange answer: Oranje
+9. Grau answer: Grijs
+10. Rosa answer: Roze
+11. Lila answer: Paars
+12. Türkis answer: Turquoise

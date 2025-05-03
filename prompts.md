@@ -32,3 +32,4 @@ I need to create the same grid with squares but then in a PDF. I'm using jsPDF, 
 It's time to adjust the answer mixing. The location and squareId data is the way the answers should be sorted. Please suggested an update to the line:
             let mixedAnswers = [...answers]; // No mixing for now
 to sort the mixed answers according to the sorting specified in the square ids when going through them by location.
+
